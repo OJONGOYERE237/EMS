@@ -1,0 +1,52 @@
+.signupinput{
+    display: block;
+    width: 75%;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgb(236, 225, 225);
+    outline: none;
+}
+button{
+    display: block;
+    width: 25%;
+    margin: auto;
+    border-radius: 10px;
+    height: 30px;
+    border-style: none;
+}
+form{
+    width: 400px;
+    margin: auto;
+    background-color: #006788;
+    padding: 20px;
+    margin-top: 70px;
+    border-radius: 10px;
+}
+.subsignup{
+    /* margin-bottom: 70px; */
+    font-size: small;
+    width: 50%;
+    margin: auto;
+    margin-bottom: 15px;
+    /* background-color: red; */
+    text-align: center;
+    color: white;
+}
+.signup{
+    font-size: 250%;
+    width: 40%;
+    margin: auto;
+    /* background-color: red; */
+    text-align: center;
+    color: white;
+
+}
+.beneathsignup{
+    font-size: small;
+    width: 50%;
+    margin: auto;
+    margin-top: 10px;
+}

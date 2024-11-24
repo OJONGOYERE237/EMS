@@ -1,0 +1,27 @@
+.landingPageFooter{
+    background-color: #18202B;
+    /* padding-left: 70px;
+    padding-top: 25px;
+    padding-right: 70px; */
+    padding: 25px 70px;
+   
+}
+.footerIcondiv{
+    display: flex;
+    color: white;
+    
+}
+.subFooterContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.subFooterParagraph{
+    font-size: large;
+    font-weight: bold;
+    color: white;
+}
+.subFooter{
+    color: #92a1b5;
+    font-size: small;
+}

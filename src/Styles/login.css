@@ -1,0 +1,14 @@
+.login{
+    font-size: 250%;
+    width: 40%;
+    margin: auto;
+    /* background-color: red; */
+    text-align: center;
+    margin-bottom: 10px;
+}
+.beneathlogin{
+    font-size: small;
+    width: 50%;
+    margin: auto;
+    margin-top: 10px;
+}

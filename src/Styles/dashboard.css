@@ -1,0 +1,14 @@
+.dashboard{
+    font-size: 30px;
+}
+.dashboardProfile{
+    display: flex;
+    border-bottom: 1px solid grey;
+    height: 16%;
+    align-items: center;
+    padding: 25px;
+}
+.dashboardName{
+    margin-bottom: 0px;
+    padding-left: 32px;
+}

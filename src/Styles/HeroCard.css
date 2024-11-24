@@ -1,0 +1,16 @@
+.oneCard{
+    box-shadow:1px 1px 6px 1px #cbcbc9;
+    font-size: 20px;
+    font-weight: bold; 
+    width: 300px; 
+    padding: 20px; 
+    border-radius: 8px; 
+    background-color: white;
+}
+.oneCard:hover{
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    transform: scale(1.1);
+    background-color: #38D3D2;
+    /* background-color: #f55600; */
+    color: white;
+}

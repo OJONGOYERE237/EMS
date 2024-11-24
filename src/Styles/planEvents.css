@@ -1,0 +1,28 @@
+.planEventsImage{
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+    object-position: top;
+}
+.planEventsParagraph{
+    width: 50%;
+}
+.planEventsdiv{
+    width: 50%;
+    height: 100%;
+}
+.planEventsButton{
+    margin: 0px;
+    width: 200px;
+    height: 50px;
+    border-radius: 4px;
+    background-color: #ff5900;
+    margin-top: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+}
+.planEventsButton:hover{
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    transform: scale(1.1);
+}

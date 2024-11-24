@@ -1,0 +1,18 @@
+.eventInput {
+    margin-left: 15px;
+    width: 300px;
+}
+
+
+.imageLabel {
+    margin-left: 60px;
+    background-color: skyblue;
+    padding: 10px 20px;
+    cursor: pointer
+}
+
+.imageLabel:hover {
+    background-color: white;
+    color: "black";
+    border: 1px solid skyblue
+}
