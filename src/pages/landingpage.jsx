@@ -1,18 +1,20 @@
-import Navbar from "../components/Navbar";
+
 import img from '../Assets/images/Background3.jpg'
 import Hero from "../components/hero";
 import Button from '@mui/joy/Button';
-import DrawerAppBar from "../components/Navbarr"
+import Navbar from "../components/Navbarr"
 import LandingPageBody from "../components/CategoryCard";
 import Categories from "../components/Categories";
 import PlanEvents from "../components/PlanEvents"
 import LandingPageFooter from "../components/landingPageFooter";
 
+
+
 const Landingpage = () => {
     return (
         <div>
             {/* <Navbar /> */}
-            <DrawerAppBar/>
+            {/* <Navbar/> */}
             <Hero
                 // image={img}
                 // heading={"Your Events your Platform"}

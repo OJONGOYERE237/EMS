@@ -17,10 +17,14 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
-const navItems = [{text:'How it works'}, {text:'Explore'}, {text:'Get Started', path: '/signup'}];
+const navItems = [
+  { text: 'How it works', }, 
+  { text: 'Explore' }, 
+  { text: 'Get Started', path: '/signUpUpdate' }
+];
 
-function DrawerAppBar(props) {
-  const { window } = props;
+function Navbar(props) {
+  const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -33,14 +37,12 @@ function DrawerAppBar(props) {
       <Typography variant="h6" sx={{ my: 2 }}>
         MUI
       </Typography>
-     
-
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton onClick={()=>navigate(item.path)} sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.text} />
+          <ListItem key={item.text} disablePadding sx={{color: 'black'}}>
+            <ListItemButton onClick={() => navigate(item.path)} sx={{ textAlign: 'center'}}>
+              <ListItemText primary={item.text} sx={{color: 'black'}} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -48,13 +50,12 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex', marginBottom: "0px", paddingBottom: "0px"}} className='what'>
+    <Box sx={{ display: 'flex', marginBottom: "0px", paddingBottom: "0px" }} className='what'>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar >
+        <Toolbar sx={{backgroundColor:'white',}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -64,20 +65,40 @@ function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1, height: "40px",display: { xs: 'none', sm: 'block', md:"flex" }, alignItems: "center"}}>
-           <Typography
-            variant="h6"
-            component="div"
-            style={{marginRight: "90px", fontWeight: "bold"}}
-          >
-            EVENTINGS
-          </Typography>
-          {/* <input type="text" placeholder='search' style={{borderStyle:"none", borderRadius:"7px", width: "250px", height:"40px", outline:"none" , borderStyle: "none", textAlign:"center"}}/> */}
-           </Box>
-          <Box sx={{ display: { xs: 'none', sm: 'block', md:"flex" }, alignItems: "center"}}>
-          <button style={{marginRight:"15px", borderRadius: "0px", backgroundColor:"#FD7100", color: "white", fontSize: "small", fontWeight: "bold", height: "40px"}}>BROWSE EVENTS</button>
+          <Box sx={{ flexGrow: 1, height: "40px", display: { xs: 'none', sm: 'block', md: "flex" }, alignItems: "center" }}>
+            <Typography
+              variant="h6"
+              component="div"
+              style={{ 
+                marginRight: "90px", 
+                fontWeight: "bold", 
+                color:'#f05537',
+                fontFamily:"Neue Plak Text, Neue Plak", 
+                fontSize:'25px', 
+                fontWeight:'600'
+              }}
+            >
+              EVENTINGS
+            </Typography>
+            {/* <input type="text" placeholder='search' style={{borderStyle:"none", borderRadius:"7px", width: "250px", height:"40px", outline:"none" , borderStyle: "none", textAlign:"center"}}/> */}
+          </Box>
+          <Box sx={{ display: { xs: 'none', sm: 'block', md: "flex" }, alignItems: "center" }}>
+            <button
+              style={{
+                marginRight: "15px",
+                borderRadius: "0px",
+                backgroundColor: "#f05537",
+                color: "white",
+                height: "40px",
+                fontFamily:"Neue Plak Text, Neue Plak", 
+                fontSize:'14px',
+                fontWeight:'600'
+              }}
+              onClick={() => navigate('/browseeventpage')}
+
+            >BROWSE EVENTS</button>
             {navItems.map((item) => (
-              <Button onClick={()=>navigate(item.path)} key={item.text} sx={{ color: '#fff', width:"150px"}}>
+              <Button onClick={() => navigate(item.path)} key={item.text} sx={{ color: 'black', width: "150px", fontFamily:"Neue Plak Text, Neue Plak", fontSize:'14px', fontWeight:'600' }}>
                 {item.text}
               </Button>
             ))}
@@ -86,7 +107,6 @@ function DrawerAppBar(props) {
       </AppBar>
       <nav>
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -101,21 +121,15 @@ function DrawerAppBar(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main" sx={{ width: '100%' }}>
         <Toolbar />
-        <Typography>
-        </Typography>
+        {children}
       </Box>
     </Box>
   );
 }
 
-DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
-export default DrawerAppBar;
+export default Navbar;
+
+

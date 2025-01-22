@@ -5,6 +5,8 @@ import App from './App';
 import { AuthContextProvider } from './context/authContext'
 import { UserContextProvider } from './context/userContext';
 import { EventContextProvider } from './context/eventContext';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import '@fontsource/inter';
 
 
@@ -16,7 +18,9 @@ root.render(
     <AuthContextProvider>
       <UserContextProvider>
         <EventContextProvider>
-          <App />
+          <LocalizationProvider dateAdapter= {AdapterDayjs}>
+            <App />
+          </LocalizationProvider>
         </EventContextProvider>
       </UserContextProvider>
     </AuthContextProvider>

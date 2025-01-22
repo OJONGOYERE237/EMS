@@ -18,28 +18,31 @@ const SignUp = () => {
 
     return (
         <div>
-            <form>
+            <form className='signUpForm'>
                 <div className='signup'>Sign up</div>
                 <div className='subsignup'>Sign up to continue</div>
                 <input className='signupinput'
-
                     type="text"
                     placeholder='Username'
+                    value={username}
                     onChange={(event) => { setUsername(event.target.value) }}
                 />
                 <input className='signupinput'
                     type="text"
                     placeholder='Email'
+                    value={email}
                     onChange={(event) => { setEmail(event.target.value) }}
                 />
                 <input className='signupinput'
                     type="text"
                     placeholder='Phone Number'
+                    value={phoneNumber}
                     onChange={(event) => { setPhoneNumber(event.target.value) }}
                 />
                 <input className='signupinput'
                     type="text"
                     placeholder='Password'
+                    value={password}
                     onChange={(event) => { setPassword(event.target.value) }}
                 />
                 <button className='authButton' onClick={async function (e) {

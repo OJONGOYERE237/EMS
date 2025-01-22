@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import mig from '../Assets/images/Background2.jpg'
 import { useAuth } from '../context/authContext'
 import { useState } from 'react';
-import Navbar from '../components/Navbar';
 import Hero from '../components/hero';
 import { useUserContext } from '../context/userContext';
 import { useEventContext } from '../context/eventContext';

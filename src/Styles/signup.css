@@ -17,7 +17,7 @@ button{
     height: 30px;
     border-style: none;
 }
-form{
+.signUpForm{
     width: 400px;
     margin: auto;
     background-color: #006788;

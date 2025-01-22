@@ -12,7 +12,9 @@ const userReducer = (state, action) => { // a reducer is a function that takes t
 
   switch (action.type) {
     case 'SET_USER':
-      return { ...state, user: action.payload};
+      console.log(action.payload, "this is the payload in the usercontext.")
+      localStorage.setItem('emsUser', JSON.stringify(action.payload))
+      return {user: action.payload};
     default:
       return state;
   }
@@ -21,6 +23,7 @@ const userReducer = (state, action) => { // a reducer is a function that takes t
 // UserProvider component to wrap around the app
 export const UserContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
+
   useEffect(()=>{
     console.log (state)
   }, [state])

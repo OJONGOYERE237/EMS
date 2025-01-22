@@ -17,7 +17,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventIcon from '@mui/icons-material/Event';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -29,10 +29,37 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useUserContext } from '../../context/userContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
+
 function Layout(props) {
+  const { state: { user: { username, id } } } = useUserContext()
+  const location = useLocation()
+  const appHeaders = [
+    {
+      pathname: "/auth",
+      appHeader: "Dashboard"
+    },
+    {
+      pathname: "/auth/createEventPage",
+      appHeader: "Create Event"
+    },
+    {
+      pathname: "/auth/events/my-events",
+      appHeader: "My Events"
+    },
+    {
+      pathname: "/auth/events/attending",
+      appHeader: "Attending"
+    },
+    {
+      pathname: "/profilePage",
+      appHeader: "User profile"
+    }
+  ]
   const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -63,18 +90,18 @@ function Layout(props) {
   const handleOrgsListClick = () => {
     setOrganizationsOpen(!organizationsOpen);
   };
-  
+
 
   const drawerItems = [
     {
       text: "Dashboard",
       icon: <DashboardIcon />,
-      path: "/dashboard"
+      path: "/auth"
     },
     {
       text: "Create Event",
-      icon: <EventSeatIcon/>,
-      path: "/createEventPage",
+      icon: <EventSeatIcon />,
+      path: "/auth/createEventPage",
     },
     {
       text: "Events",
@@ -84,20 +111,20 @@ function Layout(props) {
       subList: [
         {
           text: "My Events",
-          icon: <ContactsIcon sx={{fontSize:"18px"}} />,
-          path: '/events/my-events'
+          icon: <ContactsIcon sx={{ fontSize: "18px" }} />,
+          path: '/auth/events/my-events'
         },
         {
           text: "Attending",
-          icon: <ViewListIcon  sx={{fontSize:"18px"}}/>,
-          path: '/events/my-events'
+          icon: <ViewListIcon sx={{ fontSize: "18px" }} />,
+          path: '/auth/events/my-events'
         }
       ]
     },
     {
       text: "Organisations",
       icon: <GroupsIcon />,
-      path: "/organizations",
+      path: "/auth/organizations",
       // openState: organizationsOpen,
       // openFunc: handleOrgsListClick,
       // subList: [
@@ -112,26 +139,43 @@ function Layout(props) {
       //     path: "/dashboard",
       //   }
       // ]
-      
+
     },
     {
       text: "Exit To App",
       icon: <ExitToAppIcon />,
-      path: "/unAuth"
+      path: "/landing"
     },
-    
+    {
+      text: "logout",
+      icon: <LogoutIcon/>,
+      path: "/landing"
+
+    }
+
   ]
 
   const navigate = useNavigate()
   const drawer = (
     <div>
-      <div className='dashboardProfile'>
-        <AccountCircleIcon />
-        <p className='dashboardName'>Oyere Emmy</p>
+      <div className='dashboardProfile' onClick={() => navigate ('/profilePage')}>
+        <AccountCircleIcon 
+          onClick = {() => navigate ('/profilePage')}
+          // sx={{
+          //   "&:hover": {
+          //     cursor: "pointer",
+          //     backgroundColor:'#e8f0fe',
+          //     borderRadius: '50%',
+          //     padding: '10px'
+          //   }
+              
+          // }}
+        />
+        <p className='dashboardName'>{username}</p>
       </div>
       {/* <Toolbar /> */}
-      <Toolbar></Toolbar>
-      <Divider />
+      {/* <Toolbar></Toolbar> */}
+      {/* <Divider /> */}
       <List>
         {drawerItems.map(({ text, icon, path, subList, openState, openFunc }, index) => (
           <ListItem key={text}>
@@ -148,12 +192,12 @@ function Layout(props) {
                     {icon}
                   </ListItemIcon>
                   <ListItemText primary={text} />
-                  {openState? <ExpandLess /> : <ExpandMore />}
+                  {openState ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 <Collapse in={openState} timeout="auto" unmountOnExit>
-                  <List sx={{paddingLeft:'20px'}} component="div" disablePadding>
+                  <List sx={{ paddingLeft: '20px' }} component="div" disablePadding>
                     {subList.map(({ text, icon, path }) => (
-                      <ListItemButton sx={{my:'15px', borderRadius: "7px", padding: '0px 10px' }} onClick={() => { navigate(path) }}>
+                      <ListItemButton key={text} sx={{ my: '15px', borderRadius: "7px", padding: '0px 10px' }} onClick={() => { navigate(path) }}>
                         <ListItemIcon>
                           {icon}
                         </ListItemIcon>
@@ -186,7 +230,7 @@ function Layout(props) {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
 
       <AppBar
         position="fixed"
@@ -207,7 +251,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            {appHeaders.find((header) => header.pathname == location.pathname)?.appHeader}
           </Typography>
         </Toolbar>
       </AppBar>

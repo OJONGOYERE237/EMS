@@ -3,12 +3,16 @@
 }
 .dashboardProfile{
     display: flex;
-    border-bottom: 1px solid grey;
-    height: 16%;
+    border-bottom: 1px solid rgb(213, 212, 212);
+    height: 64px;
     align-items: center;
     padding: 25px;
 }
+.dashboardProfile:hover{
+    cursor: pointer;
+    background-color:#eeeeee;
+}
 .dashboardName{
     margin-bottom: 0px;
-    padding-left: 32px;
+    padding-left: 35px;
 }

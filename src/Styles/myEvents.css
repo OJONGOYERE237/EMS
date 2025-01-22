@@ -1,0 +1,117 @@
+table{
+    border-collapse:collapse;
+    width: 100%;
+    margin-top: 20px;
+
+
+    /* background-color: blueviolet; */
+}
+th, td{
+    padding: 10px 15px;
+    text-align: left;
+    width: auto;
+    border: 1px solid #aaa;
+}
+tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Light grey for odd rows */
+  }
+  
+tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+  }
+.myEventstable{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    height: 350px;
+}
+/* .wholeMyEventsdiv{
+    background-color: #F6F6F9;
+} */
+.tableHeader{
+    background-color:#1976D2;
+}
+.myeventsInput{
+    /* margin-top: 20px; */
+    height: 38px;
+    width: 350px;
+    /* text-align: center; */
+    border-color: #d0cdcd ;
+    /* border-color: red; */
+    border-width: 1px;
+    border-style: solid;
+    font-size: small;
+    padding-left: 15px;
+}
+.myeventsInput:focus{
+    border-color: #1976d2;
+    outline: none;
+}
+
+.inputButton{
+    width: 100px;
+    height: 38px;
+    color: white;
+    border-radius: 0px;
+    background-color: #1976d2;
+}
+.inputdiv{
+    width: 400px;
+    display: flex;
+    justify-content: space-around;
+}
+.addButton{
+    background-color: #1976d2;
+    width: 90px;
+    height: 36px;
+    border-radius: 5px;
+    color: white;
+    margin-left: 1000px;
+    margin-right: 500px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.addButton:hover{
+    transform: translateY(-5px) scale(1.1); /* Moves up and scales */
+}
+.VisibilityIcon{
+    background-color: #1976D2;
+    color: white; 
+    font-size:25px; 
+    padding:5px; 
+    border-radius: 5px; 
+    margin-left:15px; 
+    margin-right:30px
+}
+.VisibilityIcon:hover{
+    background-color:#A4A4A4;
+    cursor: pointer;
+
+}
+.EditIcon{
+    background-color: #1976D2; 
+    color: white; 
+    font-size: 25px; 
+    padding: 5px; 
+    border-radius: 5px; 
+    margin-right:30px
+}
+.EditIcon:hover{
+    background-color:#A4A4A4;
+    cursor: pointer;
+}
+.DeleteIcon{
+    background-color: red; 
+    color: white; 
+    font-size: 25px; 
+    padding: 5px; 
+    border-radius: 5px
+}
+.DeleteIcon:hover{
+    transform: translateY(-5px); /* Moves up*/
+    cursor: pointer;
+}

@@ -1,9 +1,9 @@
 .searchComponent{
     background-Color: white;
     margin-top: 40px;
-    height: 60px;
+    height: 72px;
     width: 450px;
-    border-radius:35px;
+    /* border-radius:35px; */
     display:flex;
     justify-Content: flex-start;
     position: relative;
@@ -13,23 +13,23 @@
 }
 .searchInput{
     padding: 10px 20px;
-    border-Radius: 35px;
+    /* border-Radius: 35px; */
     border-Style: none; 
     outline: none; 
     width: 75%;
 }
 .searchIcon{
-    background-Color:#FD7100;
+    background-Color:#182e6f;
     margin-Left:10px;
-    height:60px;
+    height:72px;
     width: 75px;
-    border-Radius: 35px; 
     position:absolute;
     top: 100;
-    left: 380px; 
+    left: 415px; 
     display: flex; 
     justify-content: center;
     align-Items: center;
+    border: 1px solid #182e6f;
 }
 @media (min-width: 640px){
     

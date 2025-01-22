@@ -16,20 +16,21 @@ const Login = () => {
     const { dispatch } = useAuth()
     const { dispatch : userDispatch} = useUserContext()
 
-
     return (
         <div>
-            <form>
+            <form className='signUpForm'>
                 <div className='signup'>Log in</div>
                 <div className='subsignup'>Log Into your account</div>
                 <input className='signupinput'
                     type="text"
                     placeholder='Email'
+                    value={email}
                     onChange={(event) => { setEmail(event.target.value) }}
                 />
                 <input className='signupinput'
                     type="text"
                     placeholder='Password'
+                    value={password}
                     onChange={(event) => { setPassword(event.target.value) }}
                 />
                 <button className='authButton' onClick={async function (e) {
