@@ -35,6 +35,7 @@ export default function ProfilePage() {
   const [bioLoading, setBioLoading] = useState(false);
   const [interestLoading, setInterestLoading] = useState(false);
   const [interests, setInterests] = useState(user ? user.interests ? user.interests : [] : [])
+  const [isLoading, setIsLoading]= useState(true)
 
   const resetUserInfo = () => {
     if (user) {
@@ -151,7 +152,7 @@ export default function ProfilePage() {
           <Box sx={{ mb: 1, position: 'relative' }}>
             <Typography variant='h5'>Personal info</Typography>
             <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
+              Customize how your profile information will appear to the networks.
             </Typography>
             {!infoEdit && <IconButton
               aria-label="upload new picture"

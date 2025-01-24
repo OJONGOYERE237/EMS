@@ -1,27 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react';
 import easyevents from '../Assets/images/easyevents.jpg'
 import '../Styles/planEvents.css'
 import CheckIcon from '@mui/icons-material/Check';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress} from '@mui/material';
+
 
 const PlanEvents = () => {
+      const navigate = useNavigate();
+      const [isLoading, setIsLoading] = useState(false);
+      
   return (
-    <div style={{ marginTop: "150px", marginBottom:'100px', display: 'flex', padding: '0px 70px', height:'475px', alignItems:'start', backgroundColor:'#F6F8FA', paddingTop:'75px' }}>
+    <div style={{ marginTop: "50px", marginBottom: '100px', display: 'flex', padding: '0px 70px', height: '475px', alignItems: 'start', backgroundColor: '#F6F8FA', paddingTop: '75px' }}>
       <div className='planEventsParagraph'>
-        <h2 style={{marginBottom:'30px' ,fontSize: '50px', paddingTop: 'none', lineHeight: '3rem', color: '#2A0959', fontFamily:'Poppins' }}>Planning Events has never been easier!</h2>
-        <div style={{display:'flex'}}>
-          <CheckCircleIcon sx={{color:'#44B098', backgroundColor:'white'}}/>
-          <p style={{marginLeft:'10px', fontFamily:'Montserrat', fontSize:'20px'}}>Plan and manage your events constructively </p>
+        <h2 style={{ marginBottom: '30px', fontSize: '50px', paddingTop: 'none', lineHeight: '3rem', color: '#2A0959', fontFamily: 'Poppins' }}>Planning Events has never been easier!</h2>
+        <div style={{ display: 'flex' }}>
+          <CheckCircleIcon sx={{ color: '#44B098', backgroundColor: 'white' }} />
+          <p style={{ marginLeft: '10px', fontFamily: 'Montserrat', fontSize: '20px' }}>Plan and manage your events constructively </p>
         </div>
-        <div style={{display:'flex'}}>
-          <CheckCircleIcon sx={{color:'#44B098', backgroundColor:'white'}}/>
-          <p style={{marginLeft:'10px', fontFamily:'Montserrat', fontSize:'20px'}}>Register for any event anywhere</p>
+        <div style={{ display: 'flex' }}>
+          <CheckCircleIcon sx={{ color: '#44B098', backgroundColor: 'white' }} />
+          <p style={{ marginLeft: '10px', fontFamily: 'Montserrat', fontSize: '20px' }}>Register for any event anywhere</p>
         </div>
-        <div style={{display:'flex'}}>
-          <CheckCircleIcon sx={{color:'#44B098', backgroundColor:'white'}}/>
-          <p style={{marginLeft:'10px', fontFamily:'Montserrat', fontSize:'20px'}}>Grow your network and engagements</p>
+        <div style={{ display: 'flex' }}>
+          <CheckCircleIcon sx={{ color: '#44B098', backgroundColor: 'white' }} />
+          <p style={{ marginLeft: '10px', fontFamily: 'Montserrat', fontSize: '20px' }}>Grow your network and engagements</p>
         </div>
-        <button className='planEventsButton'>
+        <button className='planEventsButton'
+          onClick={ () => {isLoading?                                 
+          <CircularProgress /> :
+          navigate('/signUpUpdate')} }
+
+        >
           START NOW FOR FREE
         </button>
       </div>

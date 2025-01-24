@@ -21,6 +21,7 @@
     color: white;
     font-weight: bold;
     font-size: 15px;
+    border: none;
 }
 .planEventsButton:hover{
     transition: transform 0.3s ease, background-color 0.3s ease;

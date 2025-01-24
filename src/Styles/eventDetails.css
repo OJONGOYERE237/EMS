@@ -189,6 +189,7 @@
     margin: 0px 10px; 
     margin-top: 20px;
     border-bottom: 1px solid #707276;
+    display: flex;
 }
 .locationDiv:last-child{
     border: none;

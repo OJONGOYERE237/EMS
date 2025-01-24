@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useContext, useEffect } from 'react';
 import { fetchEvents } from '../connections/firebase';
+import { useAuth } from './authContext';
 
 // Initial state
 const initialState = { events: [] };
@@ -13,9 +14,21 @@ const eventReducer = (state, action) => { // a reducer is a function that takes 
 
   switch (action.type) {
     case 'ADD_EVENT':
-      return { events: [...state.events, action.payload]};
+      return { events: [...state.events, action.payload] };
     case 'SET_EVENTS':
-      return {events:  action.payload}
+      return { events: action.payload }
+    case 'UPDATE_EVENT':
+      return {
+        events: state.events.map(event =>
+          event.id === action.payload.id ? { ...event, ...action.payload } : event
+        )
+      };
+    case 'REMOVE_EVENT':
+      return {
+        events: state.events.filter(event =>
+          event.id !== action.payload
+        )
+      };
     default:
       return state;
   }
@@ -24,14 +37,15 @@ const eventReducer = (state, action) => { // a reducer is a function that takes 
 // EventProvider component to wrap around the app
 export const EventContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(eventReducer, initialState);
-  useEffect(()=>{
-    const getAllEvents = async () =>{
-    const events = await fetchEvents()
-    console.log ("events in the event context", events)
-    dispatch ({type: 'SET_EVENTS', payload: events})
+  const {state: {isAuthenticated}} = useAuth()
+  useEffect(() => {
+    const getAllEvents = async () => {
+      const events = await fetchEvents()
+      console.log("events in the event context", events)
+      dispatch({ type: 'SET_EVENTS', payload: events })
     }
     getAllEvents()
-},[])
+  }, [isAuthenticated])
 
   return (
     <EventContext.Provider value={{ state, dispatch }}>

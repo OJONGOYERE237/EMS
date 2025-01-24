@@ -1,23 +1,22 @@
-import React from 'react'
-import { useState } from 'react'
-import { addEvent } from '../connections/firebase'
-import { UserContextProvider, useUserContext } from '../context/userContext'
-import { useRevalidator } from 'react-router-dom'
-import { useEventContext } from '../context/eventContext'
-import { useNavigate } from 'react-router-dom'
-import "../Styles/createEventPage.css"
-import { TextField, Typography, Box, Select, FormControl, Button, MenuItem } from '@mui/material'
+import React, { useState } from 'react';
+import { addEvent } from '../connections/firebase';
+import { useUserContext } from '../context/userContext';
+import { useEventContext } from '../context/eventContext';
+import { useNavigate } from 'react-router-dom';
+import "../Styles/createEventPage.css";
+import { TextField, Typography, Box, Select, FormControl, Button, MenuItem, Chip, IconButton, CircularProgress } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const fieldBoxStyle = { display: "flex", justifyContent: "start", alignItems: "end", gap: 1, width: "100%" }
 const fieldTextStyle = { width: "25%" }
 const fieldInputStyle = { width: "60%" }
 const CreateEventPage = () => {
     const [title, setTitle] = useState("")
-    const [category, setCategory] = useState("")
+    const [categories, setCategories] = useState([])
     const [type, setType] = useState("")
     const [isPaid, setIsPaid] = useState(true)
     const [fee, setFee] = useState("")
@@ -27,15 +26,15 @@ const CreateEventPage = () => {
     const [starttime, setStarttime] = useState(new Date())
     const [endtime, setEndtime] = useState(new Date())
     const [imageFile, setImageFile] = useState(null)
-    // const [date, setDate] = useState("")
-    // const [time, setTime] = useState("")
+    const [errorMessage, setErrorMessage] = useState('')
     const [description, setDescription] = useState("")
     const [imageUrl, setImageUrl] = useState('')
     const { state: { user } } = useUserContext()
     const { dispatch } = useEventContext()
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-    const createEvent = () => { console.log({ title, category, type, isPaid, fee, location, description, startdate, enddate, starttime, endtime }) }
-    const categories = [
+    const createEvent = () => { console.log({ title, categories, type, isPaid, fee, location, description, startdate, enddate, starttime, endtime }) }
+    const allCategories = [
         "Business", "Educational", "Corporate", "Cultural", "Comedy", "Tech & Innovation", "Health & Wellness", "Sports", "Religious", "Community & Social Impact", "Agriculture & Environment"
     ]
     const types = [
@@ -49,13 +48,21 @@ const CreateEventPage = () => {
 
             reader.onload = function (ev) {
                 setImageUrl(ev.target.result)
-                // setChangedEventImage(true)
             }
             reader.readAsDataURL(file)
         }
     }
 
-    // const {dispatch} = useAuth()
+    const handleAddCategory = (category) => {
+        if (!categories.includes(category)) {
+            setCategories([...categories, category]);
+        }
+    };
+
+    const handleDeleteCategory = (categoryToDelete) => {
+        setCategories(categories.filter(category => category !== categoryToDelete));
+    };
+
     return (
         <Box>
             <Box sx={{ display: "flex", gap: 2 }}>
@@ -72,18 +79,36 @@ const CreateEventPage = () => {
                             onChange={(e) => { setTitle(e.target.value) }}
                         />
                     </Box>
+                    <Box sx={{ ...fieldBoxStyle, alignItems: "start" }}>
+                        <Typography sx={fieldTextStyle}>Categories: </Typography>
+                        <Box sx={{ ...fieldInputStyle, border: "1px solid #ccc", padding: "5px", gap: "5px", display: "flex", flexWrap: "wrap" }}>
+                            {categories.map((category) => (
+                                <Chip
+                                    key={category}
+                                    label={category}
+                                    onDelete={() => handleDeleteCategory(category)}
+                                    deleteIcon={<DeleteIcon />}
+                                />
+                            ))}
+                        </Box>
+                    </Box>
                     <Box sx={fieldBoxStyle}>
-                        <Typography sx={fieldTextStyle}>Category: </Typography>
+                        <Typography sx={fieldTextStyle}>Add Category: </Typography>
                         <Select
                             sx={fieldInputStyle}
-                            // defaultValue={30}
                             size='small'
                             variant='standard'
-                            value={category}
-                            onChange={(e) => { setCategory(e.target.value) }}
+                            value=""
+                            onChange={(e) => { handleAddCategory(e.target.value) }}
                         >
-                            {categories.map((category) => ( // to return just a line of code we don't need to have the curly braces
-                                <MenuItem key={category} value={category}>{category}</MenuItem>
+                            {allCategories.map((category) => (
+                                <MenuItem
+                                    key={category}
+                                    value={category}
+                                    disabled={categories.includes(category)}
+                                >
+                                    {category}
+                                </MenuItem>
                             ))}
                         </Select>
                     </Box>
@@ -91,7 +116,6 @@ const CreateEventPage = () => {
                         <Typography sx={fieldTextStyle}>Type: </Typography>
                         <Select
                             sx={fieldInputStyle}
-                            // defaultValue={30}
                             size='small'
                             variant='standard'
                             value={type}
@@ -106,9 +130,6 @@ const CreateEventPage = () => {
                         <Typography sx={fieldTextStyle}>Free or Paid: </Typography>
                         <FormControl sx={fieldInputStyle}>
                             <Select
-                                // defaultValue={30}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
                                 size='small'
                                 variant='standard'
                                 value={isPaid}
@@ -152,16 +173,6 @@ const CreateEventPage = () => {
                 </Box>
                 {/* the right box */}
                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "start", gap: 4, width: "45%" }}>
-                    {/* <Box sx={fieldBoxStyle}>
-                        <Typography sx={fieldTextStyle}>Title: </Typography>
-                        <TextField
-                            sx={fieldInputStyle}
-                            id="standard-size-small"
-                            defaultValue=""
-                            size="small"
-                            variant="standard"
-                        />
-                    </Box> */}
                     <Box sx={fieldBoxStyle}>
                         <Typography sx={fieldTextStyle}>Location: </Typography>
                         <TextField
@@ -180,15 +191,6 @@ const CreateEventPage = () => {
                             label="Basic date picker"
                             onChange={(newdate) => { setStartdate(newdate) }}
                         />
-                        {/* <TextField
-                            sx={fieldInputStyle}
-                            id="standard-size-small"
-                            defaultValue=""
-                            size="small"
-                            variant="standard"
-                            value={date}
-                            onChange={(e) => { setDate(e.target.value) }}
-                        /> */}
                     </Box>
                     <Box sx={fieldBoxStyle}>
                         <Typography sx={fieldTextStyle}>End Date: </Typography>
@@ -197,15 +199,6 @@ const CreateEventPage = () => {
                             label="Basic date picker"
                             onChange={(newdate) => { setEnddate(newdate) }}
                         />
-                        {/* <TextField
-                            sx={fieldInputStyle}
-                            id="standard-size-small"
-                            defaultValue=""
-                            size="small"
-                            variant="standard"
-                            value={date}
-                            onChange={(e) => { setDate(e.target.value) }}
-                        /> */}
                     </Box>
                     <Box sx={fieldBoxStyle}>
                         <Typography sx={fieldTextStyle}>Start Time: </Typography>
@@ -214,32 +207,14 @@ const CreateEventPage = () => {
                             value={dayjs(starttime)}
                             onChange={(newtime) => { setStarttime(newtime) }}
                         />
-                        {/* <TextField
-                            sx={fieldInputStyle}
-                            id="standard-size-small"
-                            defaultValue=""
-                            size="small"
-                            variant="standard"
-                            value={time}
-                            onChange={(e) => { setTime(e.target.value) }}
-                        /> */}
                     </Box>
                     <Box sx={fieldBoxStyle}>
-                        <Typography sx={fieldTextStyle}>End Time </Typography>
+                        <Typography sx={fieldTextStyle}>End Time: </Typography>
                         <TimePicker
                             label="Basic time picker"
                             value={dayjs(endtime)}
                             onChange={(newtime) => { setEndtime(newtime) }}
                         />
-                        {/* <TextField
-                            sx={fieldInputStyle}
-                            id="standard-size-small"
-                            defaultValue=""
-                            size="small"
-                            variant="standard"
-                            value={time}
-                            onChange={(e) => { setTime(e.target.value) }}
-                        /> */}
                     </Box>
                     <Box sx={{ ...fieldBoxStyle, alignItems: "start" }}>
                         <Typography sx={fieldTextStyle}>Description: </Typography>
@@ -249,7 +224,6 @@ const CreateEventPage = () => {
                             size="small"
                             value={description}
                             onChange={(e) => { setDescription(e.target.value) }}
-                            // variant="contained"
                             multiline
                             rows={4}
                             placeholder='Describe your event'
@@ -264,16 +238,42 @@ const CreateEventPage = () => {
 
                     onClick={async () => {
                         try {
-                            const event = await addEvent(title, category, type, isPaid, fee, location, startdate, enddate, starttime, endtime, description, user.id, imageFile)
+                            setIsLoading(true)
+                            const event = await addEvent(title, categories, type, isPaid, fee, location, new Date(startdate), new Date (enddate), new Date(starttime), new Date(endtime), description, user.id, imageFile)
                             dispatch({ type: "ADD_EVENT", payload: event })
+                            setTitle("")
+                            setCategories([])
+                            setType("")
+                            setIsPaid(true)
+                            setFee("")
+                            setLocation("")
+                            setStartdate(new Date())
+                            setEnddate(new Date())
+                            setStarttime(new Date())
+                            setEndtime(new Date())
+                            setDescription("")
+                            setImageUrl('')
+                            setImageFile(null)
+                            setErrorMessage('');// clear error message
+                            setIsLoading(false)
+                            alert("Event created successfully")
                         }
                         catch (error) {
-                            console.log(error)
+                            setIsLoading(false)
+                            console.log(error);
+                            console.log("something went wrong. Couldn't create event")
+                            setErrorMessage('Check your internet connection and try again')
                         }
-                    }}>
-                    Create
+                    }}
+                >
+                   {isLoading ? <CircularProgress  sx={{color: "white"}}/> : "Create Event"}
                 </Button>
             </Box>
+            {errorMessage && (
+                <Typography color='error' sx={{ mt: 2, ml: '25%' }}>
+                    {errorMessage}
+                </Typography>
+            )}
         </Box>
     )
 }

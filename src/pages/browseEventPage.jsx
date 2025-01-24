@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ContactsIcon from '@mui/icons-material/Contacts';
-import Navbar from '../components/Navbarr'
-import '../Styles/browseEventPage.css'
-import SearchComponent from '../components/SearchComponent'
-import { CircularProgress, Collapse, Typography } from '@mui/material';
+import Navbar from '../components/Navbarr';
+import '../Styles/browseEventPage.css';
+import SearchComponent from '../components/SearchComponent';
+import { CircularProgress, Collapse, Tooltip, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -17,42 +17,69 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EventCard from '../components/bEPCard';
-import { fetchEvents } from '../connections/firebase';
-const BrowseEventPage = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [events, setEvents] = useState([]);
-    useEffect(() => {
-        const getEvents = async () => {
-            try {
-                setIsLoading(true)
-                const Events = await fetchEvents()
-                setEvents(Events)
-                console.log(Events)
-                setIsLoading(false)
-            }
-            catch (error) {
-                console.log(error)
-                setIsLoading(false)
-            }
-        }
-        getEvents()
+import { useEventContext } from '../context/eventContext';
+import { getDate as getEventDate } from './auth/dashboard/dashboard';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
-    }, [])
-    const [sortVar, setSortVar] = useState(false);
-    const sortItems = ["Relevance", "Recommended", "Trending", "Popularity", "Low to High", "High to Low"
-    ]
+const BrowseEventPage = () => {
+    const { sentCat } = useParams()
+    const [isLoading, setIsLoading] = useState(false);
+    const { state: { events } } = useEventContext();
+    const [filteredEvents, setFilteredEvents] = useState(events);
+    const [sortVar, setSortVar] = useState('');
     const [filterOpen, setFilterOpen] = useState(false);
+    const [filter2Open, setFilter2Open] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [search, setSearch] = useState('');
+
+
+
+    const clearFilters = () => {
+        setSelectedCategory('');
+        setSelectedDate('');
+    };
+    const categories = [
+        "Business", "Educational",
+        "Corporate", "Cultural", "Comedy",
+        "Tech & Innovation", "Health & Wellness",
+        "Sports", "Religious", "Community & Social Impact",
+        "Agriculture & Environment"
+    ]
+
+    useEffect(() => {
+        if (sentCat && categories.includes(sentCat)) {
+            setSelectedCategory(sentCat)
+        }
+    }, [sentCat])
+    
+    const sortItems = ["Relevance", "Recommended", "Trending", "Popularity", "Low to High", "High to Low"];
 
     const handleFilterListClick = () => {
         setFilterOpen(!filterOpen);
     };
-    const [filter2Open, setFilter2Open] = useState(false);
 
     const handleFilter2ListClick = () => {
         setFilter2Open(!filter2Open);
+    };
+
+    const FilterToggle = () => {
+        if (selectedCategory || selectedDate)
+            return (
+                <>
+                    <Tooltip title="Clear filters">
+                        <IconButton onClick={clearFilters} sx={{ marginLeft: 'auto' }}>
+                            <FilterAltOffIcon />
+                        </IconButton>
+                    </Tooltip>
+                </>
+            );
     }
+
     const filter = [
         {
             text: "Recents",
@@ -62,84 +89,107 @@ const BrowseEventPage = () => {
                 {
                     text: "Tomorrow",
                     icon: <ContactsIcon sx={{ fontSize: "18px" }} />,
+                    value: 'tomorrow'
                 },
                 {
                     text: "In 2 days",
                     icon: <ViewListIcon sx={{ fontSize: "18px" }} />,
+                    value: 'in2days'
                 },
                 {
                     text: 'Within the week',
-                    icon: <ViewListIcon />
+                    icon: <ViewListIcon />,
+                    value: 'week'
                 },
             ]
         },
-
         {
             text: "Category",
             openState: filter2Open,
             openFunc: handleFilter2ListClick,
-            subList: [
-                {
-                    text: "Business",
-                    icon: <ContactsIcon sx={{ fontSize: "18px" }} />,
-                },
-                {
-                    text: "Religious",
-                    icon: <ViewListIcon sx={{ fontSize: "18px" }} />,
-                },
-                {
-                    text: 'Health & Wellness',
-                    icon: <ViewListIcon />
-                },
-                {
-                    text: 'Agriculture',
-                    icon: <ViewListIcon />
-                },
-                {
-                    text: 'Bamenda',
-                    icon: <ViewListIcon />
-                },
-
-            ]
+            subList: categories.map((category) => ({
+                text: category,
+                icon: <ViewListIcon sx={{ fontSize: "18px" }} />,
+                value: category
+            }))
         },
-    ]
+    ];
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        let filtered = events;
 
-    const filter2 = [
-        {
-            text: "Location",
-            openState: filterOpen,
-            openFunc: handleFilterListClick,
-        },
-    ]
+        if (selectedCategory) {
+            filtered = filtered.filter(event => event.categories.includes(selectedCategory));
+        }
+
+        if (selectedDate) {
+            const today = new Date();
+            if (selectedDate === 'tomorrow') {
+                const tomorrow = new Date(today);
+                tomorrow.setDate(today.getDate() + 1);
+                filtered = filtered.filter(event => getEventDate(event.startdate).toDateString() === tomorrow.toDateString());
+            } else if (selectedDate === 'in2days') {
+                const in2days = new Date(today);
+                in2days.setDate(today.getDate() + 2);
+                filtered = filtered.filter(event => getEventDate(event.startdate).toDateString() === in2days.toDateString());
+            } else if (selectedDate === 'week') {
+                const endOfWeek = new Date(today);
+                endOfWeek.setDate(today.getDate() + 7);
+                filtered = filtered.filter(event => getEventDate(event.startdate) <= endOfWeek);
+            }
+        }
+
+        if (search) {
+            filtered = filtered.filter(event => event.title.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        setFilteredEvents(filtered);
+    }, [events, selectedCategory, selectedDate, search]);
+
     return (
         <div>
             <div className='browseEventPage'>
                 <div className='browseEventHeader'>
                     <p className='headerParagraph'>Find Your Dream Events here!</p>
-                    <p className = 'headerParagraph2'>Looking for Events that match your interest? Eventings has you covered.</p>
-                    <SearchComponent boxWidth={'450px'} iconButtonWidth={'70px'} borderRadius={'15px'} buttonIsHalf={true} justifySelf={'center'} inputWidth={'330px'} />
+                    <p className='headerParagraph2'>Looking for Events that match your interest? Eventings has you covered.</p>
+                    <SearchComponent
+                        styles={{
+                            borderRadius: '15px', inputWidth: '330px',
+                            iconButtonWidth: '70px', boxWidth: '450px',
+                            buttonIsHalf: true, justifySelf: 'center'
+                        }}
+                        searchText={search}
+                        setSearchText={setSearch}
+                    />
                 </div>
-                <div className='bEPline'>
-
-                </div>
+                <div className='bEPline'></div>
                 <div className='browseEventBody'>
                     <div className='bEPfilter'>
-                        <p style={{ padding: '15px 0px 0px 25px', fontWeight: 'bold', marginBottom: '0px' }}>Filters</p>
+                        <div style={{ padding: '15px 0px 0px 25px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <p style={{ fontWeight: 'bold', marginBottom: '0px' }}>Filters</p>
+                            <FilterToggle />
+                        </div>
                         <List>
-                            {filter.map(({ text, icon, openFunc, openState, subList, openFunc2 }) => (
-                                <ListItem sx={{ padding: '0px' }} key={text} >
+                            {filter.map(({ text, icon, openFunc, openState, subList }) => (
+                                <ListItem sx={{ padding: '0px' }} key={text}>
                                     <Box sx={{ width: "100%" }}>
                                         <ListItemButton onClick={openFunc} sx={{ borderRadius: "7px", paddingLeft: '25px', color: '#6c6f7e', fontWeight: 'bolder' }}>
                                             <ListItemText primary={text} sx={{ fontWeight: 'bold' }} />
                                             {openState ? <ExpandLess /> : <ExpandMore />}
                                         </ListItemButton>
                                         <Collapse in={openState} timeout="auto" unmountOnExit>
-                                            <List sx={{ paddingLeft: '20px' }} component="div" disablePadding>
-                                                {subList.map(({ text, icon, path }) => (
-                                                    <ListItemButton key={text} sx={{ my: '15px', borderRadius: "7px", padding: '0px 10px' }} onClick={() => { navigate(path) }}>
+                                            <List sx={{ paddingLeft: '20px', maxHeight: '200px', overflowY: 'auto' }} component="div" disablePadding>
+                                                {subList.map(({ text, icon, value }) => (
+                                                    <ListItemButton key={text} sx={{ my: '15px', borderRadius: "7px", padding: '0px 10px' }}
+                                                        onClick={() => {
+                                                            if (categories.includes(text)) {
+                                                                setSelectedCategory(value);
+                                                            } else {
+                                                                setSelectedDate(value);
+                                                            }
+                                                        }}>
                                                         <ListItemIcon>
                                                             {icon}
                                                         </ListItemIcon>
@@ -152,7 +202,6 @@ const BrowseEventPage = () => {
                                 </ListItem>
                             ))}
                         </List>
-
                     </div>
 
                     <div className='searchResults'>
@@ -173,29 +222,34 @@ const BrowseEventPage = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <Typography sx={{ alignSelf: 'end', color: 'grey', fontWeight: 'light' }}>300+ results</Typography>
+                            <Typography sx={{ alignSelf: 'end', color: 'grey', fontWeight: 'light' }}>{filteredEvents.length} results</Typography>
                         </Box>
                         <div className='isLoadingDiv'>
-                            {isLoading ?
-                                <CircularProgress /> :
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
-                                    {events.map((event) => (
-                                        <EventCard event={event} />
-                                    ))}
+                            {isLoading ? (
+                                <CircularProgress />
+                            ) : (
+                                <div style={{
+                                    display: 'flex', flexWrap: 'wrap', gap: '24px',
+                                    ...filteredEvents.length === 0 && { justifyContent: 'center', alignItems: 'center', height: '100%' }
+                                }}>
+                                    {filteredEvents.length === 0 ? (
+                                        <div style={{ textAlign: 'center', width: '100%' }}>
+                                            <ContactsIcon sx={{ fontSize: '100px', color: 'grey' }} />
+                                            <Typography sx={{ color: 'grey', fontWeight: 'light', mt: 3 }}>{`No ${selectedCategory} events found`}</Typography>
+                                        </div>
+                                    ) : (
+                                        filteredEvents.map((event) => (
+                                            <EventCard key={event.id} event={event} />
+                                        ))
+                                    )}
                                 </div>
-                            }
+                            )}
                         </div>
                     </div>
-
-
                 </div>
             </div>
-
         </div>
-
-        // how to change the background color of the whole page.
-        // #f5f7fa - background color i want to use.
     );
+};
 
-}
-export default BrowseEventPage
+export default BrowseEventPage;

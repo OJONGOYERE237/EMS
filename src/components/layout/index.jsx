@@ -31,6 +31,9 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useUserContext } from '../../context/userContext';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { type } from '@testing-library/user-event/dist/type';
+import { useAuth } from '../../context/authContext';
+import { HowToReg } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -53,16 +56,26 @@ function Layout(props) {
     },
     {
       pathname: "/auth/events/attending",
-      appHeader: "Attending"
+      appHeader: "Event Registrations"
     },
     {
       pathname: "/profilePage",
       appHeader: "User profile"
+    },
+    {
+      pathname: "/auth/events/my-events/:id",
+      appHeader: "My Events1"
+    },
+    {
+      pathname: "/auth/events/registered",
+      appHeader: "Registered Events"
     }
   ]
   const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const {dispatch} = useUserContext()
+  const {dispatch: authDispatch} = useAuth()
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -91,6 +104,7 @@ function Layout(props) {
     setOrganizationsOpen(!organizationsOpen);
   };
 
+  const navigate = useNavigate()
 
   const drawerItems = [
     {
@@ -115,9 +129,14 @@ function Layout(props) {
           path: '/auth/events/my-events'
         },
         {
-          text: "Attending",
+          text: "Registrations",
           icon: <ViewListIcon sx={{ fontSize: "18px" }} />,
-          path: '/auth/events/my-events'
+          path: '/auth/events/attending'
+        },
+        {
+          text: "Registered",
+          icon: <HowToReg sx={{ fontSize: "18px" }} />,
+          path: '/auth/events/registered'
         }
       ]
     },
@@ -149,13 +168,20 @@ function Layout(props) {
     {
       text: "logout",
       icon: <LogoutIcon/>,
-      path: "/landing"
-
+      path: "/landing",
+      action: () => {
+        localStorage.removeItem('emsUser')
+        localStorage.removeItem('emsToken')
+        dispatch({type: "SET_USER", payload: null})
+        authDispatch({type: "LOGOUT"})
+        //navigate back to an unauthenticated page
+        navigate('/')
+      }
     }
 
   ]
 
-  const navigate = useNavigate()
+  
   const drawer = (
     <div>
       <div className='dashboardProfile' onClick={() => navigate ('/profilePage')}>
@@ -177,10 +203,13 @@ function Layout(props) {
       {/* <Toolbar></Toolbar> */}
       {/* <Divider /> */}
       <List>
-        {drawerItems.map(({ text, icon, path, subList, openState, openFunc }, index) => (
+        {drawerItems.map(({ text, icon, path, subList, openState, openFunc, action}, index) => (
           <ListItem key={text}>
             {!subList ?
-              <ListItemButton sx={{ borderRadius: "7px", padding: '0px 10px' }} onClick={() => { navigate(path) }}>
+              <ListItemButton sx={{ borderRadius: "7px", padding: '0px 10px' }} onClick={() => { 
+                if(action) action();
+                else navigate(path)
+              }}>
                 <ListItemIcon>
                   {icon}
                 </ListItemIcon>

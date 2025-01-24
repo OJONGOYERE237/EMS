@@ -2,8 +2,6 @@ table{
     border-collapse:collapse;
     width: 100%;
     margin-top: 20px;
-
-
     /* background-color: blueviolet; */
 }
 th, td{
@@ -23,7 +21,7 @@ tr:nth-child(even) {
     display: flex;
     /* align-items: center; */
     justify-content: center;
-    height: 350px;
+    /* height: 350px; */
 }
 /* .wholeMyEventsdiv{
     background-color: #F6F6F9;
@@ -54,6 +52,7 @@ tr:nth-child(even) {
     color: white;
     border-radius: 0px;
     background-color: #1976d2;
+    border: none;
 }
 .inputdiv{
     width: 400px;

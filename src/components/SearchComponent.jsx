@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 
-
-const SearchComponent = ({ borderRadius, inputWidth, iconButtonWidth, boxWidth, buttonIsHalf, justifySelf, color }) => {
-    const [searchText, setSearchText] = useState("")
-
+const SearchComponent = ({ styles, searchText, setSearchText }) => {
+    const { borderRadius, inputWidth, iconButtonWidth, boxWidth, buttonIsHalf, justifySelf } = styles;
 
     const searchInputStyles = {
         padding: '10px 20px',
@@ -14,13 +12,12 @@ const SearchComponent = ({ borderRadius, inputWidth, iconButtonWidth, boxWidth, 
         width: inputWidth,
     };
 
-    const searchIcon ={
+    const searchIcon = {
         color: 'white'
-    }
+    };
 
     const searchButtonStyle = {
         backgroundColor: '#cc3f24',
-        // marginLeft: '10px',
         height: '72px',
         width: iconButtonWidth,
         position: 'absolute',
@@ -29,12 +26,12 @@ const SearchComponent = ({ borderRadius, inputWidth, iconButtonWidth, boxWidth, 
         justifyContent: 'center',
         alignItems: 'center',
         ...(buttonIsHalf) ? {
-            borderTopRightRadius: borderRadius, 
+            borderTopRightRadius: borderRadius,
             borderBottomRightRadius: borderRadius
         } : {
             borderRadius
         }
-      };
+    };
 
     const searchComponentStyles = {
         backgroundColor: "white",
@@ -46,14 +43,11 @@ const SearchComponent = ({ borderRadius, inputWidth, iconButtonWidth, boxWidth, 
         position: "relative",
         alignItems: 'center',
         gap: "10px",
-        // boxShadow: "1px 1px 6px 1px #cbcbc9",
-        borderRadius, 
+        borderRadius,
         justifySelf,
         paddingLeft: '10px',
         border: "1px solid #cc3f24",
-
     };
-
 
     return (
         <div className='searchComponent' style={searchComponentStyles}>
@@ -65,7 +59,7 @@ const SearchComponent = ({ borderRadius, inputWidth, iconButtonWidth, boxWidth, 
                 <SearchIcon sx={searchIcon} />
             </span>
         </div>
-    )
-}
+    );
+};
 
-export default SearchComponent
+export default SearchComponent;

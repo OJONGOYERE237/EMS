@@ -25,10 +25,13 @@ export function convertTimestampToDate(timestamp) {
 
 const EventCard = ({ event }) => {
   const navigate = useNavigate();
+  console.log(event)
   return (
     <Card
       className='bepCard'
-      onClick={()=> navigate(`/eventdetailspage/${event.id}` )}
+      onClick={() => {
+        navigate(`/eventdetailspage/${event.id}`)
+      }}
       sx={{ width: "300px", boxShadow: 3, marginTop: '40px' }}>
       {/* Image Section */}
       <CardMedia
@@ -36,7 +39,7 @@ const EventCard = ({ event }) => {
         alt="Content Marketing"
         height="200"
         // image="https://picsum.photos/200/300" // Replace with actual image URL
-        image= {event.imageUrl} // Replace with actual image URL
+        image={event.imageUrl} // Replace with actual image URL
       />
 
       {/* Content Section */}
@@ -48,11 +51,11 @@ const EventCard = ({ event }) => {
 
         {/* Tags */}
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2, }}>
-          <Chip label={event.category} variant="outlined" size='small' />
-          {/* <Chip label="creative writing" variant="outlined" size='small' />
-          <Chip label="blog writing" variant="outlined" size='small'/>
-          <Chip label="blog" variant="outlined" size='small'/>
-          <Chip label="web content" variant="outlined" size='small' /> */}
+          {
+            event.categories.map((category) => (
+              <Chip label={category} key={category} variant="outlined" size='small' />
+            ))
+          }
         </Box>
 
         {/* Profile Section */}
@@ -64,7 +67,7 @@ const EventCard = ({ event }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Typography sx={{ color: event.isPaid ? "orange" : "Green" }} >
               {/* XAF5000 */}
-              {event.isPaid ? ` ${event.fee}` : "FREE"}
+              {event.isPaid ? `XAF ${event.fee}` : "FREE"}
             </Typography>
           </Box>
         </Box>

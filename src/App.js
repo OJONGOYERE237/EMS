@@ -4,12 +4,12 @@ import '@fontsource/inter';
 
 import './App.css';
 // import Navbar from './components/Navbar';
-import SignUp from './pages/signUp';
+// import SignUp from './pages/signUp';
 import { BrowserRouter, Route, Routes, useNavigate, Navigate, redirect, useLocation, Router } from 'react-router-dom';
 import { useAuth } from './context/authContext';
 import { jwtDecode } from 'jwt-decode';
 import Home from './pages/home';
-import Login from './pages/login';
+// import Login from './pages/login';
 import Landingpage from './pages/landingpage';
 import CreateEventPage from './pages/CreateEventPage';
 import { useUserContext } from './context/userContext';
@@ -26,7 +26,9 @@ import SignUpUpdate from './pages/signUpUpdate';
 import LoginUpdate from './pages/LoginUpdate';
 // import ProfilePage from './pages/profile/ProfilePage';
 import ProfilePage from './pages/ProfilePage';
-
+import MyEventDetails from './pages/auth/myEvents/myEventDetails';
+import Attending from './pages/auth/myEvents/attending';
+import RegisteredEvents from './pages/auth/myEvents/registeredEvents';
 
 
 function App() {
@@ -67,12 +69,10 @@ function App() {
           <Routes>
             <Route path='/' element={<Navigate to='/unAuth' />} />
             <Route path='/unAuth' element={<Navbar><Landingpage /></Navbar>} />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/signUpUpdate' element={<SignUpUpdate />} />
             <Route path='/loginUpdate' element={< LoginUpdate />} />
             <Route path='/createEvent' element={<Navigate to='/unAuth' />} />
-            <Route path='/browseeventpage' element={<Navbar><BrowseEventPage /></Navbar>} />
+            <Route path='/browseeventpage/:sentCat' element={<Navbar><BrowseEventPage /></Navbar>} />
             <Route path='/eventdetailspage/:id' element={<Navbar>< EventDetailsPage /></Navbar>} />
             <Route path='*' element={<Navigate to={'/unAuth'} />} />
             
@@ -84,9 +84,12 @@ function App() {
             <Route path='/auth/organizations' element={<Layout><Organizations /></Layout>} />
             <Route path='/auth/createEventPage' element={<Layout><CreateEventPage /></Layout>} />
             <Route path='/auth/events/my-events' element={<Layout><MyEvents /></Layout>} />
+            <Route path='/auth/events/attending' element={<Layout><Attending /></Layout>} />
+            <Route path='/auth/events/registered' element={<Layout><RegisteredEvents /></Layout>} />
+            <Route path='/auth/events/my-events/:id' element={<Layout><MyEventDetails /></Layout>} />
             <Route path='/profilePage' element={<Layout><ProfilePage /></Layout>} />
             <Route path='/landing' element={<Navbar><Landingpage /></Navbar>} />
-            <Route path='/browseeventpage' element={<Navbar><BrowseEventPage /></Navbar>} />
+            <Route path='/browseeventpage/:sentCat' element={<Navbar><BrowseEventPage /></Navbar>} />
             <Route path='/eventdetailspage/:id' element={<Navbar>< EventDetailsPage /></Navbar>} />
             <Route path='*' element={<Navigate to={'/auth'} />} />
           </Routes>

@@ -85,18 +85,17 @@ export const loginUser = async (email, password) => {
     return userCredential.user
   } catch (error) {
     const err = { errorCode: error.code, errorMessage: error.message }
-    console.log(err)
+    // console.log(err)
     throw new Error(err.errorCode + "" + err.errorMessage)
   }
 }
 
-export const addUser = async (userId, username, email, password, confirmPassword, phoneNumber) => {
+export const addUser = async (userId, username, email, password, phoneNumber) => {
   // parameters of the function 
   const user = {
     username,
     email,
     password,
-    confirmPassword,
     phoneNumber
   }
   try {
@@ -121,16 +120,17 @@ export const addUser = async (userId, username, email, password, confirmPassword
 
 // console.log("console logging the id of the loggedin user", userloggedin)
 
-const handleImageUpload = async (imageFile) => {
+export const handleEventImageUpload = async (imageFile) => {
   if (!imageFile) return null;
   const storageRef = ref(storage, `emmy-ems-images/event-thumbnails/${imageFile.name + Date.now().toString()}`)
   try {
     const snapshot = await uploadBytes(storageRef, imageFile);
     const downloadUrl = await getDownloadURL(snapshot.ref);
     return downloadUrl
-  } catch (error) {
-    console.error("error uploading image: ", error)
-    return null
+  } catch (err) {
+    console.error("error uploading image: ", err)
+    // throw new Error(err.errorCode + "" + err.errorMessage)
+    throw new Error(err.errorCode + "" + err.errorMessage)
   }
 }
 
@@ -148,15 +148,15 @@ export const handleProfileImageUpload = async (imageFile) => {
 }
 
 export const addEvent = async (
-  title, category, type, isPaid,
+  title, categories, type, isPaid,
   fee, location, startdate,
   enddate, starttime, endtime,
   description, userID, imageFile) => {
-  const imageUrl = await handleImageUpload(imageFile)
+  const imageUrl = await handleEventImageUpload(imageFile)
   //if the image was not stored successfully, leave the function without attempting to create the event.
-  if(!imageUrl) return;
+  if (!imageUrl) return;
   const Event = {
-    title, category, type, isPaid,
+    title, categories, type, isPaid,
     fee, location, startdate, enddate,
     starttime, endtime,
     description, userID, imageUrl
@@ -175,8 +175,9 @@ export const addEvent = async (
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
     }
-  } catch (e) {
-    console.error("Error adding document: ", e);
+  } catch (err) {
+    console.error("Error adding document: ", err);
+    throw new Error(err)
   }
 }
 
