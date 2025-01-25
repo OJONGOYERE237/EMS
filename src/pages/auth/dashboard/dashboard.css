@@ -36,7 +36,7 @@
 .dashboardCard2{
     width: 350px;
     /* height: 230px; */
-    border-color: #1976d2;
+    border-color: #aaa;
     border-width: 1px;
     border-style: solid;
     border-radius: 5px;
@@ -46,7 +46,7 @@
     justify-content: space-between;
 }
 .dashboardSecondPartTitle{
-    background-color: #1976D2;
+    background-color: #aaa;
     height: 50px;
     margin-bottom: 0px;
     border-bottom: 2px solid white;

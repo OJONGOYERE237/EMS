@@ -206,7 +206,7 @@ function Layout(props) {
         {drawerItems.map(({ text, icon, path, subList, openState, openFunc, action}, index) => (
           <ListItem key={text}>
             {!subList ?
-              <ListItemButton sx={{ borderRadius: "7px", padding: '0px 10px' }} onClick={() => { 
+              <ListItemButton sx={{ borderRadius: "7px", padding: '0px 10px',  }} onClick={() => { 
                 if(action) action();
                 else navigate(path)
               }}>
@@ -269,7 +269,7 @@ function Layout(props) {
           padding: '0px'
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{color:'#f05537', backgroundColor:'#f05537'}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -278,18 +278,28 @@ function Layout(props) {
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {appHeaders.find((header) => header.pathname == location.pathname)?.appHeader}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+            </IconButton>
+            <Typography noWrap component="div"
+              sx={{
+                fontSize: '20px',
+                color: 'white',
+                backgroundColor: '#f05537',
+                padding: '10px',
+                borderRadius: '5px',
+              }}>
+              {appHeaders.find((header) => {
+                const regex = new RegExp(`^${header.pathname.replace(':id', '\\d+')}$`);
+                return regex.test(location.pathname);
+              })?.appHeader}
+            </Typography>
+            </Toolbar>
+            </AppBar>
+            <Box
+              component="nav"
+              sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+              aria-label="mailbox folders"
+            >
+              {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           variant="temporary"
           open={mobileOpen}

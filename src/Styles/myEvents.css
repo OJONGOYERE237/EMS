@@ -7,9 +7,10 @@ table{
 th, td{
     padding: 10px 15px;
     text-align: left;
-    width: auto;
+    /* width: auto; */
     border: 1px solid #aaa;
 }
+
 tr:nth-child(odd) {
     background-color: #f9f9f9; /* Light grey for odd rows */
   }
@@ -27,7 +28,8 @@ tr:nth-child(even) {
     background-color: #F6F6F9;
 } */
 .tableHeader{
-    background-color:#1976D2;
+    /* background-color:#f05537; */
+    border-color: #f05537;
 }
 .myeventsInput{
     /* margin-top: 20px; */
@@ -42,7 +44,7 @@ tr:nth-child(even) {
     padding-left: 15px;
 }
 .myeventsInput:focus{
-    border-color: #1976d2;
+    border-color: #f05537;
     outline: none;
 }
 
@@ -51,7 +53,7 @@ tr:nth-child(even) {
     height: 38px;
     color: white;
     border-radius: 0px;
-    background-color: #1976d2;
+    background-color: #f05537;
     border: none;
 }
 .inputdiv{
@@ -60,7 +62,7 @@ tr:nth-child(even) {
     justify-content: space-around;
 }
 .addButton{
-    background-color: #1976d2;
+    background-color: #f05537;
     width: 90px;
     height: 36px;
     border-radius: 5px;

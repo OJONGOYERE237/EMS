@@ -305,15 +305,18 @@ const MyEventDetails = () => {
             <Box sx={{ display: "flex", justifyContent: "start", width: "100%" }}>
                 {editMode ? (
                     <Box sx={{ display: "flex", gap: 2, width: { xs: "100%", md: "50%" } }}>
-                        <Button variant='contained' sx={{ mt: 3, padding: 2, width: "60%", width: "50%" }} onClick={handleSave}>
+                        <Button variant='contained' sx={{ mt: 3, padding: 2, width: "60%", width: "50%", backgroundColor:'#aaa'}} onClick={handleSave}>
                             {isLoading ? <CircularProgress sx={{ color: "white" }} /> : "Save"}
                         </Button>
-                        <Button variant='contained' sx={{ mt: 3, padding: 2, width: "60%", width: "50%" }} onClick={handleCancel}>
+                        <Button variant='contained' sx={{ mt: 3, padding: 2, width: "60%", width: "50%", backgroundColor:'#aaa' }} onClick={handleCancel}>
                             Cancel
                         </Button>
                     </Box>
                 ) : (
-                    <Button variant='contained' sx={{ mt: 3, padding: 2, width: "50%", margin: 'auto' }} onClick={() => setEditMode(true)}>
+                    <Button variant='contained' sx={{ mt: 3, padding: 2, width: "30%", margin: 'auto', backgroundColor:'white', border:'1px solid #aaa', 
+                        color:'black', 
+                        '&:hover': { backgroundColor: '#aaa', color: 'white' }
+                    }} onClick={() => setEditMode(true)}>
                         Edit
                     </Button>
                 )}

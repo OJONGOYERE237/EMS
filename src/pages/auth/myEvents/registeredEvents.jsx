@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useEventContext } from '../../../context/eventContext';
 import { useUserContext } from '../../../context/userContext';
-import '../../../Styles/myEvents.css';
+import '../../../Styles/registered.css';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';

@@ -234,12 +234,26 @@ const CreateEventPage = () => {
             </Box>
 
             <Box sx={{ display: "flex", justifyContent: "start", width: "45%" }}>
-                <Button variant='contained' sx={{ mt: 3, padding: 2.5, width: "60%", ml: "25%" }}
+                <Button
+                    variant='contained'
+                    sx={{
+                        mt: 3,
+                        padding: 2.5,
+                        width: "60%",
+                        ml: "25%",
+                        border: '1px solid #f05537',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        "&:hover": {
+                            backgroundColor: '#f05537',
+                            color: 'white'
+                        }
+                    }}
 
                     onClick={async () => {
                         try {
                             setIsLoading(true)
-                            const event = await addEvent(title, categories, type, isPaid, fee, location, new Date(startdate), new Date (enddate), new Date(starttime), new Date(endtime), description, user.id, imageFile)
+                            const event = await addEvent(title, categories, type, isPaid, fee, location, new Date(startdate), new Date(enddate), new Date(starttime), new Date(endtime), description, user.id, imageFile)
                             dispatch({ type: "ADD_EVENT", payload: event })
                             setTitle("")
                             setCategories([])
@@ -266,7 +280,7 @@ const CreateEventPage = () => {
                         }
                     }}
                 >
-                   {isLoading ? <CircularProgress  sx={{color: "white"}}/> : "Create Event"}
+                    {isLoading ? <CircularProgress sx={{ color: "white" }} /> : "Create Event"}
                 </Button>
             </Box>
             {errorMessage && (

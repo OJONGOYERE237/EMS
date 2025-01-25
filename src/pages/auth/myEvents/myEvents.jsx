@@ -90,17 +90,20 @@ const MyEvents = () => {
                                     {dayjs().isBefore(dayjs(getDate(event.startdate))) ? 'Upcoming' :
                                         dayjs().isAfter(dayjs(getDate(event.enddate))) ? 'Completed' : 'Ongoing'}
                                 </td>
-                                <td style={{}}>
-
-                                    <span onClick={() => navigate(`/auth/events/my-events/${event.id}`)}>
+                                <td className='iconsTD' >
+                                    <div style={{display:'flex'}}>
+                                    <div onClick={() => navigate(`/auth/events/my-events/${event.id}`)}>
                                         <VisibilityIcon className='VisibilityIcon' />
-                                    </span>
-                                    <span onClick={() => navigate(`/auth/events/my-events/${event.id}`)}>
+                                    </div>
+                                    <div onClick={() => navigate(`/auth/events/my-events/${event.id}`)}>
                                         <EditIcon className='EditIcon' />
-                                    </span>
-                                    <span onClick={() => handleDelete(event.id)}>
+                                    </div>
+                                    <div onClick={() => handleDelete(event.id)}>
                                         {isDeleting == event.id ? <CircularProgress /> : <DeleteIcon className='DeleteIcon' />}
-                                    </span>
+                                    </div>
+                                    </div>
+
+                                    
                                 </td>
                             </tr>
                         ))}
